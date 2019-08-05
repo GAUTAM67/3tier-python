@@ -5,8 +5,8 @@
 ############################
 
 # AWS Credentials
-aws_access_key: "AKIASXZSO5ZAWGTI7EO5"
-aws_secret_key: "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"
+aws_access_key: ""
+aws_secret_key: ""
 aws_region:     "ap-south-1"
 
 # VPC Information
