@@ -1,0 +1,26 @@
+- name: spin up the load balancer and add the servers to it
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: setup a simple load balancer
+      ec2_elb_lb:
+        name: aws-elb-demo
+        state: present
+        region: "{{ aws_region }}"
+        zones:
+          - ap-south-1a
+        listeners:
+          - protocol: http
+            load_balancer_port: 80
+            instance_port: 80
+      register: aws-elb-demo
+
+    - name: add the webservers to the load balancer
+      local_action: ec2_elb
+      args:
+        instance_id: "{{ item.id }}"
+        ec2_elbs: aws-elb-demo
+        state: present
+        region: "{{ aws_region }}"
+      with_items: ec2_facts

@@ -1,0 +1,41 @@
+- name: Create ec2
+  ec2:
+    region: "{{ aws_region }}"
+    key_name: "{{ key_name }}"
+    group_id: "{{ my_main_sg.group_id }}"
+    instance_type: t2.micro
+    image: "{{ image_id }}"
+    wait: yes
+    wait_timeout: 500
+    exact_count: 1
+    instance_tags:
+      Name: "{{ aws_network_name }}-manish"
+      Environment: Dev
+    count_tag: 
+      Name: "{{ aws_network_name }}-manish"
+      Environment: Dev
+    vpc_subnet_id: "{{ my_private_subnet.subnet.id }}"
+    assign_public_ip: no
+  register: ec2_facts
+
+- debug: "var=ec2_facts"
+
+- name: create an mysql EC2 instance
+  ec2:
+    region: "{{ aws_region }}"
+    key_name: "{{ key_name }}"
+    group_id: "{{ my_main_sg.group_id }}"
+    instance_type: t2.micro
+    image: "{{ image_id }}"
+    wait: yes
+    wait_timeout: 500
+    exact_count: 1
+    instance_tags:
+      Name: "{{ aws_network_name }}-mysql_db"
+      Environment: Dev
+    count_tag:
+      Name: "{{ aws_network_name }}-mysql_db"
+      Environment: Dev
+    vpc_subnet_id: "{{ my_private_subnet.subnet.id }}"
+    assign_public_ip: no
+  register: ec2_db

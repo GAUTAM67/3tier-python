@@ -1,0 +1,32 @@
+# Install system apt packages
+- hosts: webservers
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: update cache
+    apt: name=python-software-properties state=present update_cache=yes cache_valid_time=43200
+  - name: disable lighttpd
+    systemd: name=lighttpd state=stopped enabled=no 
+  - name: install packages
+    apt: name={{item}} state=installed
+    with_items:
+      - tree         
+      - python-pip   
+      - python-dev  
+      - python3-pip
+      - python3-dev
+      - nginx
+
+# Install the app
+- hosts: webservers
+  tasks:
+  - name: clone repo
+    git:
+      repo: 'https://github.com/{{ github_user }}/{{ app_name }}.git'
+      dest: /home/{{ ansible_ssh_user }}/{{ app_name }}
+      update: yes  
+  - name: install modules in a virtualenv
+    pip:
+      requirements: /home/{{ ansible_ssh_user }}/{{ app_name }}/requirements.txt
+      virtualenv: /home/{{ ansible_ssh_user }}/{{ app_name }}/env
+      virtualenv_python: python3.5
