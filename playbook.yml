@@ -1,0 +1,7 @@
+---
+
+- hosts: local
+  roles:
+    - vpc
+    - ec2
+    - elb
