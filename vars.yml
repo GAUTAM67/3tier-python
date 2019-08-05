@@ -25,9 +25,6 @@ aws_network_name: "private_ec2"
 # Subnets
 private_subnet_1_cidr: "10.0.2.0/24"
 
-############################
-# Used in part 3 only      #
-############################
 
 # Subnets
 public_subnet_2_cidr:  "10.0.11.0/24"
